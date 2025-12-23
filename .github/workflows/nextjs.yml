@@ -17,16 +17,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # This tells GitHub to run all commands inside your subfolder
-    defaults:
-      run:
-        working-directory: ./personal_portfolio 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Detect package manager
         id: detect-package-manager
+        # We tell this specific step to look inside your subfolder
+        working-directory: ./personal_portfolio
         run: |
           if [ -f "yarn.lock" ]; then
             echo "manager=yarn" >> $GITHUB_OUTPUT
@@ -48,34 +46,23 @@ jobs:
         with:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
-          # Points to the lock file inside the subfolder
-          cache-dependency-path: ./personal_portfolio/package-lock.json 
+          cache-dependency-path: ./personal_portfolio/package-lock.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            personal_portfolio/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('personal_portfolio/**/package-lock.json', 'personal_portfolio/**/yarn.lock') }}-${{ hashFiles('personal_portfolio/**.[jt]s', 'personal_portfolio/**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('personal_portfolio/**/package-lock.json', 'personal_portfolio/**/yarn.lock') }}-
 
       - name: Install dependencies
+        working-directory: ./personal_portfolio
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
       - name: Build with Next.js
+        working-directory: ./personal_portfolio
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Important: Tells GitHub the 'out' folder is inside the subfolder
-          path: ./personal_portfolio/out 
+          path: ./personal_portfolio/out
 
   deploy:
     environment:
