@@ -446,8 +446,8 @@ export const PROJECTS: IProject[] = [
             Full-Stack Developer <br/>
             Developed and maintained internal administrative tools and dashboard features. Integrated the panel with Price Engine ERP to ensure real-time data synchronization and consistent pricing across the platform.
         `,
-        thumbnail: '/projects/sd-panel-1.png',
-        longThumbnail: '/projects/sd-panel-1.png',
+        thumbnail: '/projects/sd-panel-3.png',
+        longThumbnail: '/projects/sd-panel-3.png',
         images: [
             {
                 title: '',

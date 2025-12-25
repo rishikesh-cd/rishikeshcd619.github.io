@@ -109,7 +109,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
         >
             {selectedProject === null && (
                 <Image
-                    src={project.thumbnail}
+                    src={project.thumbnail || '/projects/placeholder.png'}
                     alt="Project"
                     width="300"
                     height="200"
